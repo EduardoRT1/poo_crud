@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FARMACIA</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container d-flex flex-column align-items-center justify-content-center vh-100">
+        <h1 class="display-4 text-center title">FARMACIA - CRUD</h1>
+        <div class="card mt-4">
+            <div class="card-body text-center">
+                <div class="option">
+                    <a href="{{ url_for('especialidades') }}" class="btn btn-primary btn-block mb-2">Especialidades</a>
+                </div>
+                <div class="option"><a href="{{ url_for('estatus') }}" class="btn btn-primary btn-block mb-2">Estatus</a></div>
+                <div class="option"><a href="{{ url_for('medicos') }}" class="btn btn-primary btn-block mb-2">Médicos</a></div>
+                <div class="option"><a href="{{ url_for('pacientes') }}" class="btn btn-primary btn-block mb-2">Pacientes</a></div>
+                <div class="option"><a href="{{ url_for('recetas') }}" class="btn btn-primary btn-block mb-2">Recetas</a></div>
+                <div class="option"><a href="{{ url_for('medicamentos') }}" class="btn btn-primary btn-block mb-2">Medicamentos</a></div>
+                <div class="option"><a href="{{ url_for('detalles_receta') }}" class="btn btn-primary btn-block mb-2">Detalles_receta</a></div>
+                <div class="option"><a href="{{ url_for('empleados') }}" class="btn btn-primary btn-block mb-2">Empleados</a></div>
+                <div class="option"><a href="{{ url_for('ventas') }}" class="btn btn-primary btn-block mb-2">Ventas</a></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

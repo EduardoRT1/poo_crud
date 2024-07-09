@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RECETAS</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">RECETAS</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10 my-auto">
+                <div class="mb-3 text-center">
+                    <a href="{{ url_for('home') }}" class="btn btn-info">Volver a Inicio</a>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <form id="recetaForm" action="{{ url_for('crear_receta') }}" method="POST">
+                            <div class="form-group">
+                                <input type="date" name="fecha" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <select name="paciente_id" class="form-control" required>
+                                    <option value="" disabled selected>Selecciona Paciente</option>
+                                    {% for paciente in pacientes %}
+                                        <option value="{{ paciente.id }}">{{ paciente.nombre }} {{ paciente.ap }} {{ paciente.am }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="medico_id" class="form-control" required>
+                                    <option value="" disabled selected>Selecciona Médico</option>
+                                    {% for medico in medicos %}
+                                        <option value="{{ medico.id }}">{{ medico.nombre }} {{ medico.ap }} {{ medico.am }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for receta in recetas %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>{{ receta.id }} - {{ receta.fecha }} - {{ receta.paciente.nombre }} {{ receta.paciente.ap }} {{ receta.paciente.am }} - {{ receta.medico.nombre }} {{ receta.medico.ap }} {{ receta.medico.am }}</span>
+                                    <div>
+                                        <a href="{{ url_for('editar_receta', id=receta.id) }}" class="btn btn-success btn-sm">Actualizar</a>
+                                        <form action="{{ url_for('borrar_receta', id=receta.id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                            <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar esta receta?');
+        }
+
+        document.getElementById('recetaForm').addEventListener('submit', function(event) {
+            var inputs = document.querySelectorAll('input[name="fecha"], select[name="paciente_id"], select[name="medico_id"]');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value.trim() === '') {
+                    alert('Por favor, no dejes campos vacíos');
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

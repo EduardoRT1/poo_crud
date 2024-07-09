@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Empleado</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Editar Empleado</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 my-auto">
+                <div class="mb-3 text-center">
+                    <a href="{{ url_for('empleados') }}" class="btn btn-info">Volver a Empleados</a>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <form action="{{ url_for('actualizar_empleado', id=empleado.id) }}" method="POST">
+                            <input type="hidden" name="id" value="{{ empleado.id }}">
+                            <div class="form-group">
+                                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ empleado.nombre }}" placeholder="Nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="ap" name="ap" class="form-control" value="{{ empleado.ap }}" placeholder="Apellido Paterno" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="am" name="am" class="form-control" value="{{ empleado.am }}" placeholder="Apellido Materno" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="telefono" name="telefono" class="form-control" value="{{ empleado.telefono }}" placeholder="Teléfono" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="correo" name="correo" class="form-control" value="{{ empleado.correo }}" placeholder="Correo Electrónico" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

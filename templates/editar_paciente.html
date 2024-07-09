@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Paciente</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Editar Paciente</h1>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3 my-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <form id="editPacienteForm" action="{{ url_for('actualizar_paciente', id=paciente.id) }}" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="nombre" value="{{ paciente.nombre }}" placeholder="Nombre" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="ap" value="{{ paciente.ap }}" placeholder="Apellido Paterno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="am" value="{{ paciente.am }}" placeholder="Apellido Materno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="fecha_nac" value="{{ paciente.fecha_nac }}" placeholder="Fecha de Nacimiento" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <select name="genero" class="form-control" required>
+                                    <option value="" disabled>Selecciona un Género</option>
+                                    <option value="Masculino" {% if paciente.genero == 'Masculino' %}selected{% endif %}>Masculino</option>
+                                    <option value="Femenino" {% if paciente.genero == 'Femenino' %}selected{% endif %}>Femenino</option>
+                                    <option value="Otro" {% if paciente.genero == 'Otro' %}selected{% endif %}>Otro</option>
+                                    <!-- Agregar más opciones si es necesario -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="telefono" value="{{ paciente.telefono }}" placeholder="Teléfono" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="correo" value="{{ paciente.correo }}" placeholder="Correo Electrónico" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('editPacienteForm').addEventListener('submit', function(event) {
+            var inputs = document.querySelectorAll('input[name="nombre"], input[name="ap"], input[name="am"], input[name="fecha_nac"], input[name="telefono"], input[name="correo"]');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value.trim() === '') {
+                    alert('Por favor, no dejes campos vacíos');
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

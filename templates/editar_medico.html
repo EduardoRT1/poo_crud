@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Médico</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Editar Médico</h1>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3 my-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <form id="editMedicoForm" action="{{ url_for('actualizar_medico', id=medico.id) }}" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="nombre" value="{{ medico.nombre }}" placeholder="Nombre" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="ap" value="{{ medico.ap }}" placeholder="Apellido Paterno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="am" value="{{ medico.am }}" placeholder="Apellido Materno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="telefono" value="{{ medico.telefono }}" placeholder="Teléfono" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="correo_electronico" value="{{ medico.correo_electronico }}" placeholder="Correo Electrónico" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <select name="especialidad_id" class="form-control" required>
+                                    <option value="" disabled>Selecciona una Especialidad</option>
+                                    {% for especialidad in especialidades %}
+                                        <option value="{{ especialidad.id }}" {% if especialidad.id == medico.especialidad_id %}selected{% endif %}>{{ especialidad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="estatus_id" class="form-control" required>
+                                    <option value="" disabled>Selecciona un Estatus</option>
+                                    {% for estatus in estatus %}
+                                        <option value="{{ estatus.id }}" {% if estatus.id == medico.estatus_id %}selected{% endif %}>{{ estatus.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('editMedicoForm').addEventListener('submit', function(event) {
+            var inputs = document.querySelectorAll('input[name="nombre"], input[name="ap"], input[name="am"], input[name="telefono"], input[name="correo_electronico"]');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value.trim() === '') {
+                    alert('Por favor, no dejes campos vacíos');
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

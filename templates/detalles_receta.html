@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de Receta</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Detalles de Receta</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-9 my-auto">
+                <div class="mb-3 text-center">
+                    <a href="{{ url_for('home') }}" class="btn btn-info">Volver a Inicio</a>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <form id="detalleRecetaForm" action="{{ url_for('crear_detalle_receta') }}" method="POST">
+                            <div class="form-group">
+                                <label for="receta_id">Receta</label>
+                                <select id="receta_id" name="receta_id" class="form-control" required>
+                                    <option value="">Seleccione una receta</option>
+                                    {% for receta in recetas %}
+                                        <option value="{{ receta.id }}">{{ receta.id }} - {{ receta.fecha }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="medicamento_id">Medicamento</label>
+                                <select id="medicamento_id" name="medicamento_id" class="form-control" required>
+                                    <option value="">Seleccione un medicamento</option>
+                                    {% for medicamento in medicamentos %}
+                                        <option value="{{ medicamento.id }}">{{ medicamento.nombre }}: {{ medicamento.descripcion }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="dosis" placeholder="Dosis" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="frecuencia" placeholder="Frecuencia" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="duracion" placeholder="Duración" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for detalle in detalles %}
+                                {% set receta = recetas | selectattr('id', 'equalto', detalle.receta_id) | first %}
+                                {% set medicamento = medicamentos | selectattr('id', 'equalto', detalle.medicamento_id) | first %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>{{ receta.id }} - {{ receta.fecha }} - {{ medicamento.nombre }}: {{ medicamento.descripcion }} - Dosis: {{ detalle.dosis }}, Frecuencia: {{ detalle.frecuencia }}, Duración: {{ detalle.duracion }}</span>
+                                    <div>
+                                        <a href="{{ url_for('editar_detalle_receta', id=detalle.id) }}" class="btn btn-success btn-sm">Actualizar</a>
+                                        <form action="{{ url_for('borrar_detalle_receta', id=detalle.id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                            <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este detalle de receta?');
+        }
+
+        document.getElementById('detalleRecetaForm').addEventListener('submit', function(event) {
+            var selectReceta = document.querySelector('select[name="receta_id"]');
+            var selectMedicamento = document.querySelector('select[name="medicamento_id"]');
+            if (selectReceta.value.trim() === '' || selectMedicamento.value.trim() === '') {
+                alert('Por favor, no dejes campos vacíos');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

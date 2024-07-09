@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Empleados</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Empleados</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-9 my-auto">
+                <div class="mb-3 text-center">
+                    <a href="{{ url_for('home') }}" class="btn btn-info">Volver a Inicio</a>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <form id="crearEmpleadoForm" action="{{ url_for('crear_empleado') }}" method="POST">
+                            <div class="form-group">
+                                <input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="ap" name="ap" placeholder="Apellido Paterno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="am" name="am" placeholder="Apellido Materno" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="telefono" name="telefono" placeholder="Teléfono" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for empleado in empleados %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ empleado.nombre }} {{ empleado.ap }} {{ empleado.am }} - Tel: {{ empleado.telefono }} - Email: {{ empleado.correo }}
+                                    <div>
+                                        <a href="{{ url_for('editar_empleado', id=empleado.id) }}" class="btn btn-success btn-sm">Actualizar</a>
+                                        <form action="{{ url_for('borrar_empleado', id=empleado.id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                            <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function confirmDelete() {
+            return confirm('¿Estás seguro de que deseas eliminar este empleado?');
+        }
+
+        document.getElementById('crearEmpleadoForm').addEventListener('submit', function(event) {
+            var nombre = document.querySelector('input[name="nombre"]');
+            var ap = document.querySelector('input[name="ap"]');
+            var am = document.querySelector('input[name="am"]');
+            var telefono = document.querySelector('input[name="telefono"]');
+            var correo = document.querySelector('input[name="correo"]');
+            if (nombre.value.trim() === '' || ap.value.trim() === '' || am.value.trim() === '' || telefono.value.trim() === '' || correo.value.trim() === '') {
+                alert('Por favor, no dejes campos vacíos');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

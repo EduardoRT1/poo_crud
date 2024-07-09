@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Detalle de Receta</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <!-- main.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center title mt-4">Editar Detalle de Receta</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 my-auto">
+                <div class="mb-3 text-center">
+                    <a href="{{ url_for('detalles_receta') }}" class="btn btn-info">Volver a Detalles de Receta</a>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <form action="{{ url_for('actualizar_detalle_receta', id=detalle.id) }}" method="POST">
+                            <input type="hidden" name="id" value="{{ detalle.id }}">
+                            <div class="form-group">
+                                <label for="receta_id">Receta</label>
+                                <select id="receta_id" name="receta_id" class="form-control" required>
+                                    {% for receta in recetas %}
+                                        <option value="{{ receta.id }}" {% if receta.id == detalle.receta_id %}selected{% endif %}>
+                                            {{ receta.id }} - {{ receta.fecha }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="medicamento_id">Medicamento</label>
+                                <select id="medicamento_id" name="medicamento_id" class="form-control" required>
+                                    {% for medicamento in medicamentos %}
+                                        <option value="{{ medicamento.id }}" {% if medicamento.id == detalle.medicamento_id %}selected{% endif %}>
+                                            {{ medicamento.nombre }}: {{ medicamento.descripcion }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="dosis" name="dosis" class="form-control" value="{{ detalle.dosis }}" placeholder="Dosis" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="frecuencia" name="frecuencia" class="form-control" value="{{ detalle.frecuencia }}" placeholder="Frecuencia" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="duracion" name="duracion" class="form-control" value="{{ detalle.duracion }}" placeholder="Duración" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
